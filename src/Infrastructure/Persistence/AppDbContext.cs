@@ -21,8 +21,6 @@ public class AppDbContext : MergingDbContext, IAppDbContext
 
     protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
     {
-        configurationBuilder.IgnoreAny<IList<DomainEvent>>();
-
         base.ConfigureConventions(configurationBuilder);
     }
 
