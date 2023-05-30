@@ -25,6 +25,8 @@ public class ListEndpoint : HttpEndpoint<
         return result.Status switch
         {
             ListFeaturesByCatalogQuery.Status.Success => Results.Ok(ResultToContract(result)),
+            ListFeaturesByCatalogQuery.Status.ChainDeploymentNotFound => Results.NotFound,
+            ListFeaturesByCatalogQuery.Status.CatalogNotFound => Results.NotFound,
             _ => throw new NotImplementedException()
         };
     }
