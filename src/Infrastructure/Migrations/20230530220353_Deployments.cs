@@ -19,10 +19,7 @@ namespace Nexus.Infrastructure.Migrations
                     NexusFactoryAddress = table.Column<string>(type: "text", nullable: false),
                     PublicCatalogAddress = table.Column<string>(type: "text", nullable: false)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ChainDeployments", x => x.ChainId);
-                });
+                constraints: table => table.PrimaryKey("PK_ChainDeployments", x => x.ChainId));
 
             migrationBuilder.CreateTable(
                 name: "CatalogDeployments",

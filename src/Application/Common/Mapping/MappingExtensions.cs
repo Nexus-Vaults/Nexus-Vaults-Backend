@@ -1,8 +1,4 @@
-﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
-using Microsoft.EntityFrameworkCore;
-
-namespace Nexus.Application.Common;
+﻿namespace Nexus.Application.Common;
 
 public static class MappingExtensions
 {

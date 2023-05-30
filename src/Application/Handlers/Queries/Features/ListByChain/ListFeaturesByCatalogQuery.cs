@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using Nexus.Application.Common;
 using Nexus.Application.DTOs;
 using Nexus.Application.Services;
-using System.Security.Cryptography.X509Certificates;
 
 namespace Nexus.Application.Handlers.Queries.Features.ListByChain;
 public class ListFeaturesByCatalogQuery
@@ -50,13 +49,13 @@ public class ListFeaturesByCatalogQuery
                 .ProjectTo<FeatureDeploymentDTO>(Mapper.ConfigurationProvider)
                 .ToArrayAsync(cancellationToken: cancellationToken);
 
-            if (features.Length > 0) 
+            if (features.Length > 0)
             {
                 return new Result(Status.Success, features);
             }
 
             if (!await DbContext.CatalogDeployments
-                .AnyAsync(x => x.ChainId == request.ChainId && x.Address == request.CatalogAddress, cancellationToken: cancellationToken)) 
+                .AnyAsync(x => x.ChainId == request.ChainId && x.Address == request.CatalogAddress, cancellationToken: cancellationToken))
             {
                 return new Result(Status.CatalogNotFound, null);
             }
