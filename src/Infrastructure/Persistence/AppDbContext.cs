@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Nexus.Application.Common;
 using Nexus.Application.Services;
 using Nexus.Domain.Common;
+using Nexus.Domain.Entities.Deployment;
 using Nexus.Infrastructure.Persistence.Concurrency;
 using System.Reflection;
 using System.Transactions;
@@ -10,6 +11,9 @@ using System.Transactions;
 namespace Nexus.Infrastructure.Persistence;
 public class AppDbContext : MergingDbContext, IAppDbContext
 {
+    public DbSet<ChainDeployment> ChainDeployments { get; set; }
+    public DbSet<CatalogDeployment> CatalogDeployments { get; set; }
+    public DbSet<FeatureDeployment> FeatureDeployments { get; set; }
 
     public AppDbContext(
         DbContextOptions<AppDbContext> options,

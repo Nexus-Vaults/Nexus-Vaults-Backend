@@ -12,10 +12,4 @@ public static class MappingExtensions
     {
         return PaginatedList<TDestination>.CreateAsync(queryable, pageNumber, pageSize, cancellationToken);
     }
-
-    public static Task<List<TDestination>> ProjectToListAsync<TDestination>(this IQueryable queryable, IConfigurationProvider configuration,
-        CancellationToken cancellationToken)
-    {
-        return queryable.ProjectTo<TDestination>(configuration).ToListAsync(cancellationToken);
-    }
 }

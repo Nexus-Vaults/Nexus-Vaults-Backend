@@ -1,17 +1,18 @@
-﻿using Nexus.Application.Handlers.Queries.Deployments.List;
+﻿using Nexus.Application.DTOs;
+using Nexus.Application.Handlers.Queries.Deployments.List;
 using Nexus.Contracts;
 using Nexus.WebAPI.Common;
 
-namespace Nexus.WebAPI.Endpoints.Deployments.List;
+namespace Nexus.WebAPI.Endpoints.Deployments;
 
 public record ListDeploymentsRequestContract() : IRequestContract;
 
 public record ListDeploymentsResponseContract(
-    ChainDeployment[] Deployments
+    ChainDeploymentDTO[] Deployments
 ) : IResponseContract;
 
-[GET("Deployments")]
-public class ListDeploymentsEndpoint : HttpEndpoint<
+[GET("Api/Deployments")]
+public class ListEndpoint : HttpEndpoint<
     ListDeploymentsRequestContract,
     ListDeploymentsQuery.Request, ListDeploymentsQuery.Result,
     ListDeploymentsResponseContract>
