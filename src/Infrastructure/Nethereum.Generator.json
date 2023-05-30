@@ -1,0 +1,9 @@
+{
+  "ABIConfigurations": [
+    {
+      "ContractName": "NexusFactory",
+      "ABIFile": "..\\..\\artifacts\\NexusFactory.abi",
+      "BaseOutputPath": "ContractDefinitions"
+    }
+  ]
+}
