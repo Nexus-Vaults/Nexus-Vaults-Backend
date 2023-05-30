@@ -9,6 +9,12 @@ public class FeatureDeployment
     public required ulong ChainId { get; init; }
     public required string CatalogAddress { get; init; }
 
+    public required string FeeTokenSymbol { get; init; }
+    public required string FeeTokenAddress { get; init; }
+    public required ulong FeeTokenAmount { get; init; }
+
+    public required bool IsBasic { get; init; }
+
     public virtual ChainDeployment? Chain { get; set; } //Navigation Property
     public virtual CatalogDeployment? Catalog { get; set; } //Navigation Property
 

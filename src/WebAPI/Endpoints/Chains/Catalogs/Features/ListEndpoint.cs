@@ -1,5 +1,4 @@
 ﻿using Nexus.Application.DTOs;
-using Nexus.Application.Handlers.Queries.Deployments.List;
 using Nexus.Application.Handlers.Queries.Features.ListByChain;
 using Nexus.Contracts;
 using Nexus.WebAPI.Common;

@@ -21,6 +21,12 @@ public class FeatureDeploymentConfiguration : IEntityTypeConfiguration<FeatureDe
         b.Property(x => x.ChainId);
         b.Property(x => x.CatalogAddress);
 
+        b.Property(x => x.FeeTokenSymbol);
+        b.Property(x => x.FeeTokenAddress);
+        b.Property(x => x.FeeTokenAmount);
+
+        b.Property(x => x.IsBasic);
+
         b.ToTable("FeatureDeployments");
     }
 }
