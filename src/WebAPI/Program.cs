@@ -35,7 +35,7 @@ public class Program
 #endif
         RegisterEndpoints();
 
-        //await MigrateDatabaseAsync();
+        await MigrateDatabaseAsync();
 
         await Provider.InitializeApplicationAsync(WebAssembly);
         await Provider.InitializeApplicationAsync(InfrastructureAssembly);
