@@ -3,4 +3,9 @@ using Nexus.Domain.Entities.Deployment;
 
 namespace Nexus.Application.DTOs;
 
-public record FeatureDeploymentDTO(string Address, string Name, string Description) : IMapFrom<FeatureDeployment>;
+public class FeatureDeploymentDTO : IMapFrom<FeatureDeployment>
+{
+    public required string Address { get; init; }
+    public required string Name { get; init; }
+    public required string Description { get; init; }
+}

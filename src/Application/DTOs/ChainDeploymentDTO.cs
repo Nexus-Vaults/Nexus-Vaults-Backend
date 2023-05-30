@@ -3,4 +3,14 @@ using Nexus.Domain.Entities.Deployment;
 
 namespace Nexus.Application.DTOs;
 
-public record ChainDeploymentDTO(ulong ChainId, string ChainName, string NexusFactoryAddress, string PublicCatalogAddress) : IMapFrom<ChainDeployment>;
+public class ChainDeploymentDTO : IMapFrom<ChainDeployment>
+{
+    public required ulong ChainId { get; init; }
+    public required string ChainName { get; init; }
+    public required string NexusFactoryAddress { get; init; }
+    public required string PublicCatalogAddress { get; init; }
+
+    public ChainDeploymentDTO()
+    {
+    }
+}
