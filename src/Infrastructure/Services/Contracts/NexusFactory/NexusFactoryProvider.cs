@@ -27,8 +27,8 @@ public class NexusFactoryProvider : Singleton, INexusFactoryProvider
     }
 
 
-    public INexusFactory GetInstance(ushort chainId)
+    public INexusFactory GetInstance(ushort contractChainId)
     {
-        return new NexusFactory(Web3ProviderService.GetProvider(chainId), ContractAddresses[chainId]);
+        return new NexusFactory(contractChainId, Web3ProviderService.GetProvider(contractChainId), ContractAddresses[contractChainId]);
     }
 }

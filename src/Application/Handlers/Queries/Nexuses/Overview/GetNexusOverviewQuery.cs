@@ -28,7 +28,8 @@ public class GetNexusOverviewQuery
         NexusNotFound
     }
 
-    public record Result(Status Status, string? NexusId = null, string? Name = null, string? Owner = null, VaultInfoDTO[]? Vaults = null);
+    public record Result(Status Status, string? NexusId = null, 
+        string? Name = null, string? Owner = null, NexusSubchainDTO[]? Subchains = null);
 
     public class Handler : QueryHandler<Request, Result>
     {
@@ -70,13 +71,15 @@ public class GetNexusOverviewQuery
             byte[] nexusId = ABIEncode.GetSha3ABIEncodedPacked(request.ContractChainId, request.NexusAddress);
             var controllers = VaultV1ControllerProvider.GetAllInstances();
 
-            var vaults = (
-                await Task.WhenAll(controllers.Select(controller => controller.GetVaultsAsync(nexusId)))
-            )
-            .SelectMany(x => x)
-            .ToArray();
+            var subChains = await Task.WhenAll(controllers.Select(async controller =>
+            {
+                var vaults = await controller.GetVaultsAsync(nexusId);
+                var acceptedGatewayIds = await controller.GetAcceptedGatewayIdsAsync(nexusId);
 
-            return new Result(Status.Success, Convert.ToHexString(nexusId), nexusName, nexusOwner, vaults);
+                return new NexusSubchainDTO(controller.GetContractChainId(), vaults, acceptedGatewayIds);
+            }));
+
+            return new Result(Status.Success, Convert.ToHexString(nexusId), nexusName, nexusOwner, subChains);
         }
     }
 }

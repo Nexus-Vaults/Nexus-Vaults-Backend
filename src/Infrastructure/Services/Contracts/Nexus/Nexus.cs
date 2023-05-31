@@ -11,11 +11,18 @@ using System.Threading.Tasks;
 namespace Nexus.Infrastructure.Services.Contracts.Nexus;
 internal class Nexus : INexus
 {
+    private readonly ushort ContractChainId;
     private readonly NexusService Service;
 
-    public Nexus(IWeb3 web3, string contractAddress)
+    public Nexus(ushort contractChainId, IWeb3 web3, string contractAddress)
     {
+        ContractChainId = contractChainId;
         Service = new NexusService(web3, contractAddress);
+    }
+
+    public ushort GetContractChainId()
+    {
+        return ContractChainId;
     }
 
     public Task<string> GetNameAsync()

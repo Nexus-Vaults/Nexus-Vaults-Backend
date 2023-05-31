@@ -1,4 +1,5 @@
-﻿using Nexus.Application.Handlers.Queries.Nexus.Overview;
+﻿using Nexus.Application.Handlers.Queries;
+using Nexus.Application.Handlers.Queries.Nexus.Overview;
 using Nexus.Application.Services.Contracts;
 using Nexus.Contracts;
 using Nexus.WebAPI.Common;
@@ -14,7 +15,7 @@ public record GetNexusResponseContract(
     string NexusId,
     string Name,
     string Owner,
-    VaultInfoDTO[] Vaults
+    NexusSubchainDTO[] Subchains
 ) : IResponseContract;
 
 [GET("Api/Chains/{contractChainId}/Nexuses/{nexusAddress}")]

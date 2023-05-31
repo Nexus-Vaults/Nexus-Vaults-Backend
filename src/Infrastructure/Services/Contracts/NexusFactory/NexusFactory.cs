@@ -5,14 +5,21 @@ using Nexus.Application.Services.Contracts;
 namespace Nexus.Infrastructure.Services.Contracts;
 public class NexusFactory : INexusFactory
 {
-	private readonly NexusFactoryService Service;
+    private readonly ushort ContractChainId;
+    private readonly NexusFactoryService Service;
 
-	public NexusFactory(IWeb3 web3, string contractAddress)
+	public NexusFactory(ushort contractChainId, IWeb3 web3, string contractAddress)
 	{
-		Service = new NexusFactoryService(web3, contractAddress);
+        ContractChainId = contractChainId;
+        Service = new NexusFactoryService(web3, contractAddress);
 	}
 
-	public Task<bool> HasDeployedAsync(string nexusAddress)
+    public ushort GetContractChainId()
+    {
+        return ContractChainId;
+    }
+
+    public Task<bool> HasDeployedAsync(string nexusAddress)
 	{
 		return Service.HasDeployedQueryAsync(nexusAddress);
 	}

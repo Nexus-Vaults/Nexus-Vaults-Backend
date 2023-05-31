@@ -26,15 +26,15 @@ public class VaultV1ControllerProvider : Singleton, IVaultV1ControllerProvider
             .AsReadOnly();
     }
 
-    public IVaultV1Controller GetInstance(ushort chainId)
+    public IVaultV1Controller GetInstance(ushort contractChainId)
     {
-        return new VaultV1Controller(Web3ProviderService.GetProvider(chainId), ContractAddresses[chainId]);
+        return new VaultV1Controller(contractChainId, Web3ProviderService.GetProvider(contractChainId), ContractAddresses[contractChainId]);
     }
 
     public IVaultV1Controller[] GetAllInstances()
     {
         return ContractAddresses
-            .Select(x => new VaultV1Controller(Web3ProviderService.GetProvider(x.Key), x.Value))
+            .Select(x => new VaultV1Controller(x.Key, Web3ProviderService.GetProvider(x.Key), x.Value))
             .ToArray();
     }
 }

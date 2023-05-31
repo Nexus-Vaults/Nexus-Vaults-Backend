@@ -14,8 +14,8 @@ public class NexusProvider : Singleton, INexusProvider
     [Inject]
     private readonly Web3ProviderService Web3ProviderService = null!;
 
-    public INexus GetInstance(ushort chainId, string nexusAddress)
+    public INexus GetInstance(ushort contractChainId, string nexusAddress)
     {
-        return new Nexus(Web3ProviderService.GetProvider(chainId), nexusAddress);
+        return new Nexus(contractChainId, Web3ProviderService.GetProvider(contractChainId), nexusAddress);
     }
 }
