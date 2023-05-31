@@ -1,4 +1,5 @@
 ﻿using Nexus.Application.Handlers.Queries.Deployments.List;
+using Nexus.Application.Handlers.Queries.Nexus.Overview;
 using Nexus.Application.Services.Contracts;
 using Nexus.Contracts;
 using Nexus.WebAPI.Common;
@@ -18,14 +19,16 @@ public record GetNexusResponseContract(
 [GET("Api/Chains/{contractChainId}/Nexuses/{nexusAddress}")]
 public class GetEndpoint : HttpEndpoint<
     GetNexusRequestContract,
-    ListDeploymentsQuery.Request, ListDeploymentsQuery.Result,
+    GetNexusOverviewQuery.Request, GetNexusOverviewQuery.Result,
     GetNexusResponseContract>
 {
-    public override IResult MapToResponse(ListDeploymentsQuery.Result result)
+    public override IResult MapToResponse(GetNexusOverviewQuery.Result result)
     {
         return result.Status switch
         {
-            ListDeploymentsQuery.Status.Success => Results.Ok(ResultToContract(result)),
+            GetNexusOverviewQuery.Status.Success => Results.Ok(ResultToContract(result)),
+            GetNexusOverviewQuery.Status.UnsupportedChain => Results.NotFound(),
+            GetNexusOverviewQuery.Status.NexusNotFound => Results.NotFound(),
             _ => throw new NotImplementedException()
         };
     }
