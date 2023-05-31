@@ -61,8 +61,11 @@ public class ListFeaturesByCatalogQuery
                 return new Result(Status.Success, features);
             }
 
-            if (!await DbContext.CatalogDeployments
-                .AnyAsync(x => x.ContractChainId == request.ContractChainId && x.Address == request.CatalogAddress, cancellationToken: cancellationToken))
+
+
+            if (!await DbContext.ChainDeployments
+                .AnyAsync(x => x.ContractChainId == request.ContractChainId && x.PublicCatalogAddress.ToUpper() == request.CatalogAddress.ToUpper(), 
+                cancellationToken: cancellationToken))
             {
                 return new Result(Status.CatalogNotFound, null);
             }

@@ -22,13 +22,20 @@ public class VaultV1Controller : IVaultV1Controller
     public async Task<VaultInfoDTO[]> GetVaultsAsync(byte[] nexusId)
     {
         var listResult = await Service.ListVaultsQueryAsync(nexusId);
-        return listResult.ReturnValue1
-            .Select(x => new VaultInfoDTO(x.VaultId, x.Vault))
-            .ToArray();
+
+        return listResult is null
+            ? Array.Empty<VaultInfoDTO>()
+            : listResult.ReturnValue1
+                .Select(x => new VaultInfoDTO(x.VaultId, x.Vault))
+                .ToArray();
     }
 
     public async Task<uint[]> GetAcceptedGatewayIdsAsync(byte[] nexusId)
     {
-        return (await Service.ListAcceptedGatewaysQueryAsync(nexusId)).ToArray();
+        var listResult = await Service.ListAcceptedGatewaysQueryAsync(nexusId);
+
+        return listResult is null 
+            ? Array.Empty<uint>() 
+            : listResult.ToArray();
     }
 }
