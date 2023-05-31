@@ -3,5 +3,5 @@
 namespace Nexus.Application.Services.Contracts;
 public interface INexusFactoryProvider : IService
 {
-    public INexusFactory GetNexusFactory(ulong chainId);
+    public INexusFactory GetInstance(ushort chainId);
 }

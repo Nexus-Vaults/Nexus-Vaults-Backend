@@ -8,13 +8,13 @@ public class CatalogDeploymentConfiguration : IEntityTypeConfiguration<CatalogDe
     public void Configure(EntityTypeBuilder<CatalogDeployment> b)
     {
         b.Property(x => x.Address);
-        b.HasKey(x => new { x.Address, x.ChainId });
+        b.HasKey(x => new { x.Address, x.ContractChainId });
 
-        b.Property(x => x.ChainId);
+        b.Property(x => x.ContractChainId);
 
         b.HasMany(x => x.Features)
          .WithOne(x => x.Catalog)
-         .HasForeignKey(x => new { x.CatalogAddress, x.ChainId })
+         .HasForeignKey(x => new { x.CatalogAddress, x.ContractChainId })
          .OnDelete(DeleteBehavior.Cascade);
 
         b.ToTable("CatalogDeployments");

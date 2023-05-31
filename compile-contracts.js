@@ -2,7 +2,7 @@ const fs = require("fs");
 const solc = require("solc");
 const path = require("path");
 
-const contract_names = ["NexusFactory"];
+const contract_names = ["NexusFactory", "VaultV1Controller"];
 const contracts_root = "contracts";
 
 const output_path = "artifacts";
@@ -63,6 +63,11 @@ contract_names.forEach((contract_name) => {
   var output = JSON.parse(
     solc.compile(JSON.stringify(input), { import: findImports })
   );
+
+  if (output.contracts == null) {
+    console.log(output);
+    return;
+  }
 
   const compiledContract = output.contracts["main"][contract_name];
 

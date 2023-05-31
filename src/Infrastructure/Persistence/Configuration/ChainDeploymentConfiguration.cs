@@ -7,22 +7,26 @@ public class ChainDeploymentConfiguration : IEntityTypeConfiguration<ChainDeploy
 {
     public void Configure(EntityTypeBuilder<ChainDeployment> b)
     {
-        b.Property(x => x.ChainId);
-        b.HasKey(x => x.ChainId);
+        b.Property(x => x.ContractChainId);
+        b.HasKey(x => x.ContractChainId);
+
+        b.Property(x => x.EVMChainId)
+         .IsRequired(false);
 
         b.Property(x => x.ChainName);
 
         b.Property(x => x.NexusFactoryAddress);
+        b.Property(x => x.VaultV1ControllerAddress);
         b.Property(x => x.PublicCatalogAddress);
 
         b.HasMany(x => x.Catalogs)
          .WithOne(x => x.Chain)
-         .HasForeignKey(x => x.ChainId)
+         .HasForeignKey(x => x.ContractChainId)
          .OnDelete(DeleteBehavior.Cascade);
 
         b.HasMany(x => x.Features)
          .WithOne(x => x.Chain)
-         .HasForeignKey(x => x.ChainId)
+         .HasForeignKey(x => x.ContractChainId)
          .OnDelete(DeleteBehavior.Cascade);
 
         b.ToTable("ChainDeployments");

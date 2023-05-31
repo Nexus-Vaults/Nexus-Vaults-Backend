@@ -8,12 +8,12 @@ public class FeatureDeploymentConfiguration : IEntityTypeConfiguration<FeatureDe
     public void Configure(EntityTypeBuilder<FeatureDeployment> b)
     {
         b.Property(x => x.Address);
-        b.HasKey(x => new { x.Address, x.ChainId, x.CatalogAddress });
+        b.HasKey(x => new { x.Address, x.ContractChainId, x.CatalogAddress });
 
         b.Property(x => x.Name);
         b.Property(x => x.Description);
 
-        b.Property(x => x.ChainId);
+        b.Property(x => x.ContractChainId);
         b.Property(x => x.CatalogAddress);
 
         b.Property(x => x.FeeTokenSymbol);

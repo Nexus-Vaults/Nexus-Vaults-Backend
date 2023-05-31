@@ -11,7 +11,7 @@ public class ListFeaturesByCatalogQuery
 {
     public class Request : Query<Result>
     {
-        public required ulong ChainId { get; init; }
+        public required ushort ContractChainId { get; init; }
         public required string CatalogAddress { get; init; }
 
         public class Validator : AbstractValidator<Request>
@@ -46,13 +46,13 @@ public class ListFeaturesByCatalogQuery
 
         public override async Task<Result> HandleAsync(Request request, CancellationToken cancellationToken)
         {
-            if (!Web3ProviderService.IsSupported(request.ChainId))
+            if (!Web3ProviderService.IsSupported(request.ContractChainId))
             {
                 return new Result(Status.UnsupportedChain, null);
             }
 
             var features = await DbContext.FeatureDeployments
-                .Where(x => x.ChainId == request.ChainId && x.CatalogAddress.ToUpper() == request.CatalogAddress.ToUpper())
+                .Where(x => x.ContractChainId == request.ContractChainId && x.CatalogAddress.ToUpper() == request.CatalogAddress.ToUpper())
                 .ProjectTo<FeatureDeploymentDTO>(Mapper.ConfigurationProvider)
                 .ToArrayAsync(cancellationToken: cancellationToken);
 
@@ -62,7 +62,7 @@ public class ListFeaturesByCatalogQuery
             }
 
             if (!await DbContext.CatalogDeployments
-                .AnyAsync(x => x.ChainId == request.ChainId && x.Address == request.CatalogAddress, cancellationToken: cancellationToken))
+                .AnyAsync(x => x.ContractChainId == request.ContractChainId && x.Address == request.CatalogAddress, cancellationToken: cancellationToken))
             {
                 return new Result(Status.CatalogNotFound, null);
             }

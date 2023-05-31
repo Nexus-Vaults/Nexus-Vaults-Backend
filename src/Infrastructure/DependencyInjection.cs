@@ -2,11 +2,15 @@
 using Hangfire.PostgreSql;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Nethereum.RPC.Web3;
 using Nexus.Application.Services;
 using Nexus.Infrastructure.Configuration;
 using Nexus.Infrastructure.Persistence;
 using Nexus.Infrastructure.Persistence.Concurrency;
+using Org.BouncyCastle.Crypto.Digests;
 using System.Security.Cryptography;
+using Nethereum.Hex.HexConvertors.Extensions;
+using Nethereum.Util;
 
 namespace Nexus.Infrastructure;
 

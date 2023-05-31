@@ -3,9 +3,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Nexus.Application.Services;
 using Nexus.Application.Services.Contracts;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Nexus.Infrastructure.Services.Contracts;
-public class NexusFactoryProvider : Singleton, INexusFactoryProvider
+public class VaultV1ControllerProvider : Singleton, IVaultV1ControllerProvider
 {
     [Inject]
     private readonly Web3ProviderService Web3ProviderService = null!;
@@ -18,17 +23,23 @@ public class NexusFactoryProvider : Singleton, INexusFactoryProvider
         var dbContext = scope.ServiceProvider.GetRequiredService<IAppDbContext>();
 
         var contractAddresses = await dbContext.ChainDeployments
-            .Select(x => new { x.ContractChainId, x.NexusFactoryAddress })
+            .Select(x => new { x.ContractChainId, x.VaultV1ControllerAddress })
             .ToArrayAsync();
 
         ContractAddresses = contractAddresses
-            .ToDictionary(x => x.ContractChainId, x => x.NexusFactoryAddress)
+            .ToDictionary(x => x.ContractChainId, x => x.VaultV1ControllerAddress)
             .AsReadOnly();
     }
 
-
-    public INexusFactory GetInstance(ushort chainId)
+    public IVaultV1Controller GetInstance(ushort chainId)
     {
-        return new NexusFactory(Web3ProviderService.GetProvider(chainId), ContractAddresses[chainId]);
+        return new VaultV1Controller(Web3ProviderService.GetProvider(chainId), ContractAddresses[chainId]);
+    }
+
+    public IVaultV1Controller[] GetAllInstances()
+    {
+        return ContractAddresses
+            .Select(x => new VaultV1Controller(Web3ProviderService.GetProvider(x.Key), x.Value))
+            .ToArray();
     }
 }

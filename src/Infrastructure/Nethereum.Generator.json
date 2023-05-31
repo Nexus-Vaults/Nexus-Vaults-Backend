@@ -4,6 +4,11 @@
       "ContractName": "NexusFactory",
       "ABIFile": "../../artifacts/NexusFactory.abi",
       "BaseOutputPath": "ContractDefinitions"
+    },
+    {
+      "ContractName": "VaultV1Controller",
+      "ABIFile": "../../artifacts/VaultV1Controller.abi",
+      "BaseOutputPath": "ContractDefinitions"
     }
   ]
 }
