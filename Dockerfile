@@ -19,6 +19,8 @@ RUN git clone https://github.com/Nexus-Vaults/Nexus-Vaults-Backend.git Code --re
     && cd contracts \
     && npm i
 
+ENV PATH="${PATH}:/root/.dotnet/tools"
+
 RUN cd Code \
     && node compile-contracts.js \
     && dotnet tool install -g Nethereum.Generator.Console \
