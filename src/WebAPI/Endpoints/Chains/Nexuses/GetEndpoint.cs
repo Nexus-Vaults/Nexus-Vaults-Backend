@@ -12,6 +12,8 @@ public record GetNexusRequestContract(
 
 public record GetNexusResponseContract(
     string NexusId,
+    string Name,
+    string Owner,
     VaultInfoDTO[] Vaults
 ) : IResponseContract;
 
