@@ -3,6 +3,7 @@ public class ChainDeployment
 {
     public required ulong ChainId { get; init; }
 
+    public required string RpcUrl { get; init; }
     public required string ChainName { get; set; }
 
     public required string NexusFactoryAddress { get; set; }
