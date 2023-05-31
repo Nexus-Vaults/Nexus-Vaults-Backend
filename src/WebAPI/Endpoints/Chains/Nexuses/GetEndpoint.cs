@@ -1,5 +1,4 @@
-﻿using Nexus.Application.Handlers.Queries.Deployments.List;
-using Nexus.Application.Handlers.Queries.Nexus.Overview;
+﻿using Nexus.Application.Handlers.Queries.Nexus.Overview;
 using Nexus.Application.Services.Contracts;
 using Nexus.Contracts;
 using Nexus.WebAPI.Common;
@@ -7,13 +6,13 @@ using Nexus.WebAPI.Common;
 namespace Nexus.WebAPI.Endpoints.Chains.Nexuses;
 
 public record GetNexusRequestContract(
-    ulong ContractChainId,
+    ushort ContractChainId,
     string NexusAddress
 ) : IRequestContract;
 
 public record GetNexusResponseContract(
     string NexusId,
-    VaultInfoDTO Vaults
+    VaultInfoDTO[] Vaults
 ) : IResponseContract;
 
 [GET("Api/Chains/{contractChainId}/Nexuses/{nexusAddress}")]

@@ -1,13 +1,6 @@
-﻿using Infrastructure.NexusFactory.Service;
-using Infrastructure.VaultV1Controller.ContractDefinition;
-using Infrastructure.VaultV1Controller.Service;
+﻿using Infrastructure.VaultV1Controller.Service;
 using Nethereum.Web3;
 using Nexus.Application.Services.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Nexus.Infrastructure.Services.Contracts;
 public class VaultV1Controller : IVaultV1Controller

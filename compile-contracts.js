@@ -2,7 +2,7 @@ const fs = require("fs");
 const solc = require("solc");
 const path = require("path");
 
-const contract_names = ["NexusFactory", "VaultV1Controller"];
+const contract_names = ["NexusFactory", "VaultV1Controller", "Nexus"];
 const contracts_root = "contracts";
 
 const output_path = "artifacts";

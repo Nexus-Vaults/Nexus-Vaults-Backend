@@ -1,11 +1,8 @@
 ﻿using FluentValidation;
 using Nethereum.ABI;
-using Nethereum.Util;
 using Nexus.Application.Common;
 using Nexus.Application.Services;
 using Nexus.Application.Services.Contracts;
-using System.Collections.Concurrent;
-using System.Collections.Immutable;
 
 namespace Nexus.Application.Handlers.Queries.Nexus.Overview;
 public class GetNexusOverviewQuery
@@ -31,21 +28,23 @@ public class GetNexusOverviewQuery
         NexusNotFound
     }
 
-    public record Result(Status Status, string? NexusId, VaultInfoDTO[]? Vaults);
+    public record Result(Status Status, string? NexusId = null, string? Name = null, string? Owner = null, VaultInfoDTO[]? Vaults = null);
 
     public class Handler : QueryHandler<Request, Result>
     {
         private readonly IWeb3ProviderService Web3ProviderService;
         private readonly INexusFactoryProvider NexusFactoryProvider;
         private readonly IVaultV1ControllerProvider VaultV1ControllerProvider;
+        private readonly INexusProvider NexusProvider;
         private readonly ABIEncode ABIEncode;
 
-        public Handler(IWeb3ProviderService web3ProviderService, INexusFactoryProvider nexusFactoryProvider, 
-            IVaultV1ControllerProvider vaultV1ControllerProvider, ABIEncode abiEncode)
+        public Handler(IWeb3ProviderService web3ProviderService, INexusFactoryProvider nexusFactoryProvider,
+            IVaultV1ControllerProvider vaultV1ControllerProvider, INexusProvider nexusProvider, ABIEncode abiEncode)
         {
             Web3ProviderService = web3ProviderService;
             NexusFactoryProvider = nexusFactoryProvider;
             VaultV1ControllerProvider = vaultV1ControllerProvider;
+            NexusProvider = nexusProvider;
             ABIEncode = abiEncode;
         }
 
@@ -53,17 +52,22 @@ public class GetNexusOverviewQuery
         {
             if (!Web3ProviderService.IsSupported(request.ContractChainId))
             {
-                return new Result(Status.UnsupportedChain, null, null);
+                return new Result(Status.UnsupportedChain);
             }
 
             var nexusFactory = NexusFactoryProvider.GetInstance(request.ContractChainId);
 
             if (!await nexusFactory.HasDeployedAsync(request.NexusAddress))
             {
-                return new Result(Status.NexusNotFound, null, null);
+                return new Result(Status.NexusNotFound);
             }
 
-            var nexusId = ABIEncode.GetSha3ABIEncodedPacked(request.ContractChainId, request.NexusAddress);
+            var nexus = NexusProvider.GetInstance(request.ContractChainId, request.NexusAddress);
+
+            string nexusName = await nexus.GetNameAsync();
+            string nexusOwner = await nexus.GetOwnerAsync();
+
+            byte[] nexusId = ABIEncode.GetSha3ABIEncodedPacked(request.ContractChainId, request.NexusAddress);
             var controllers = VaultV1ControllerProvider.GetAllInstances();
 
             var vaults = (
@@ -72,7 +76,7 @@ public class GetNexusOverviewQuery
             .SelectMany(x => x)
             .ToArray();
 
-            return new Result(Status.Success, Convert.ToHexString(nexusId), vaults);
+            return new Result(Status.Success, Convert.ToHexString(nexusId), nexusName, nexusOwner, vaults);
         }
     }
 }

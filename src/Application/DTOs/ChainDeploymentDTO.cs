@@ -5,7 +5,8 @@ namespace Nexus.Application.DTOs;
 
 public class ChainDeploymentDTO : IMapFrom<ChainDeployment>
 {
-    public required ulong ChainId { get; init; }
+    public required ushort ContractChainId { get; init; }
+    public required ulong EVMChainId { get; set; }
     public required string ChainName { get; init; }
     public required string NexusFactoryAddress { get; init; }
     public required string PublicCatalogAddress { get; init; }
