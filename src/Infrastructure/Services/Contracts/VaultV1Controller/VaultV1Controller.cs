@@ -41,16 +41,22 @@ public class VaultV1Controller : IVaultV1Controller
             : listResult.ToArray();
     }
 
-    public async Task<V1TokenBalance[]> AggregateBalancesAsync(byte[] nexusId, IEnumerable<V1TokenInfoDTO> tokens)
+    public async Task<V1TokenBalanceDTO[]> AggregateBalancesAsync(byte[] nexusId, IEnumerable<Application.DTOs.V1TokenInfoDTO> tokens)
     {
-        var balances = await Service.AggregateBalancesQueryAsync(nexusId, tokens.Select(x => new V1TokenInfo()
+        var t = tokens.Select(x => new V1TokenInfo()
         {
             TokenType = (byte)x.TokenType,
             TokenIdentifier = x.TokenIdentifier,
-        }).ToList());
+        }).ToList();
+
+        var balances = await Service.AggregateBalancesQueryAsync(nexusId, t);
 
         return tokens
-            .Select((x, i) => new V1TokenBalance(x, balances[i]))
+            .Select((x, i) => new V1TokenBalanceDTO()
+            {
+                Token = x,
+                Balance = balances[i]
+            })
             .ToArray();
     }
 }

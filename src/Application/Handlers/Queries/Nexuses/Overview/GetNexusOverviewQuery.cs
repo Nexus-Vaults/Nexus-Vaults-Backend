@@ -4,6 +4,7 @@ using Nexus.Application.Common;
 using Nexus.Application.DTOs;
 using Nexus.Application.Services;
 using Nexus.Application.Services.Contracts;
+using System.Text.Json;
 
 namespace Nexus.Application.Handlers.Queries.Nexus.Overview;
 public class GetNexusOverviewQuery
@@ -70,7 +71,8 @@ public class GetNexusOverviewQuery
             string nexusName = await nexus.GetNameAsync();
             string nexusOwner = await nexus.GetOwnerAsync();
 
-            byte[] nexusId = ABIEncode.GetSha3ABIEncodedPacked(request.ContractChainId, request.NexusAddress);
+            byte[] nexusId = ABIEncode.GetSha3ABIEncodedPacked(
+                new ABIValue("uint16", request.ContractChainId), new ABIValue("address", request.NexusAddress));
             var controllers = VaultV1ControllerProvider.GetAllInstances();
 
             var subChains = await Task.WhenAll(controllers.Select(async controller =>

@@ -2,7 +2,7 @@
 
 public enum V1TokenTypes : byte
 {
-    Never, //This is an error
-    Native,
-    ERC20
+    Never = 0, //This is an error
+    Native = 1,
+    ERC20 = 2
 }
