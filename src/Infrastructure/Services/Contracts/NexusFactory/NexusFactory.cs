@@ -8,11 +8,11 @@ public class NexusFactory : INexusFactory
     private readonly ushort ContractChainId;
     private readonly NexusFactoryService Service;
 
-	public NexusFactory(ushort contractChainId, IWeb3 web3, string contractAddress)
-	{
+    public NexusFactory(ushort contractChainId, IWeb3 web3, string contractAddress)
+    {
         ContractChainId = contractChainId;
         Service = new NexusFactoryService(web3, contractAddress);
-	}
+    }
 
     public ushort GetContractChainId()
     {
@@ -20,7 +20,7 @@ public class NexusFactory : INexusFactory
     }
 
     public Task<bool> HasDeployedAsync(string nexusAddress)
-	{
-		return Service.HasDeployedQueryAsync(nexusAddress);
-	}
+    {
+        return Service.HasDeployedQueryAsync(nexusAddress);
+    }
 }

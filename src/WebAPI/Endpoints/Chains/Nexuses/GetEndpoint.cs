@@ -1,6 +1,5 @@
 ﻿using Nexus.Application.Handlers.Queries;
 using Nexus.Application.Handlers.Queries.Nexus.Overview;
-using Nexus.Application.Services.Contracts;
 using Nexus.Contracts;
 using Nexus.WebAPI.Common;
 

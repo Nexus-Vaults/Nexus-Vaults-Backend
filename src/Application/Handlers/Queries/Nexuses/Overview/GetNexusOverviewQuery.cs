@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Nethereum.ABI;
 using Nexus.Application.Common;
+using Nexus.Application.DTOs;
 using Nexus.Application.Services;
 using Nexus.Application.Services.Contracts;
 
@@ -28,7 +29,7 @@ public class GetNexusOverviewQuery
         NexusNotFound
     }
 
-    public record Result(Status Status, string? NexusId = null, 
+    public record Result(Status Status, string? NexusId = null,
         string? Name = null, string? Owner = null, NexusSubchainDTO[]? Subchains = null);
 
     public class Handler : QueryHandler<Request, Result>
@@ -40,7 +41,8 @@ public class GetNexusOverviewQuery
         private readonly ABIEncode ABIEncode;
 
         public Handler(IWeb3ProviderService web3ProviderService, INexusFactoryProvider nexusFactoryProvider,
-            IVaultV1ControllerProvider vaultV1ControllerProvider, INexusProvider nexusProvider, ABIEncode abiEncode)
+            IVaultV1ControllerProvider vaultV1ControllerProvider, 
+            INexusProvider nexusProvider, ABIEncode abiEncode)
         {
             Web3ProviderService = web3ProviderService;
             NexusFactoryProvider = nexusFactoryProvider;
@@ -74,9 +76,14 @@ public class GetNexusOverviewQuery
             var subChains = await Task.WhenAll(controllers.Select(async controller =>
             {
                 var vaults = await controller.GetVaultsAsync(nexusId);
-                var acceptedGatewayIds = await controller.GetAcceptedGatewayIdsAsync(nexusId);
+                var balances = await controller.AggregateBalancesAsync(nexusId, new[]
+                {
+                    V1TokenInfoDTO.Native
+                });
 
-                return new NexusSubchainDTO(controller.GetContractChainId(), vaults, acceptedGatewayIds);
+                uint[] acceptedGatewayIds = await controller.GetAcceptedGatewayIdsAsync(nexusId);
+
+                return new NexusSubchainDTO(controller.GetContractChainId(), vaults, balances, acceptedGatewayIds);
             }));
 
             return new Result(Status.Success, Convert.ToHexString(nexusId), nexusName, nexusOwner, subChains);

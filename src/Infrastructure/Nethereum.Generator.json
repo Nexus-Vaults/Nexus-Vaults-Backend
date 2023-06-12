@@ -14,6 +14,11 @@
       "ContractName": "Nexus",
       "ABIFile": "../../artifacts/Nexus.abi",
       "BaseOutputPath": "ContractDefinitions"
+    },
+    {
+      "ContractName": "VaultV1",
+      "ABIFile": "../../artifacts/VaultV1.abi",
+      "BaseOutputPath": "ContractDefinitions"
     }
   ]
 }

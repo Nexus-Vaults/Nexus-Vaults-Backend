@@ -1,12 +1,6 @@
 ﻿using Infrastructure.Nexus.Service;
-using Infrastructure.NexusFactory.Service;
 using Nethereum.Web3;
 using Nexus.Application.Services.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Nexus.Infrastructure.Services.Contracts.Nexus;
 internal class Nexus : INexus

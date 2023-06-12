@@ -1,5 +1,7 @@
-﻿using Infrastructure.VaultV1Controller.Service;
+﻿using Infrastructure.VaultV1Controller.ContractDefinition;
+using Infrastructure.VaultV1Controller.Service;
 using Nethereum.Web3;
+using Nexus.Application.DTOs;
 using Nexus.Application.Services.Contracts;
 
 namespace Nexus.Infrastructure.Services.Contracts;
@@ -34,8 +36,21 @@ public class VaultV1Controller : IVaultV1Controller
     {
         var listResult = await Service.ListAcceptedGatewaysQueryAsync(nexusId);
 
-        return listResult is null 
-            ? Array.Empty<uint>() 
+        return listResult is null
+            ? Array.Empty<uint>()
             : listResult.ToArray();
+    }
+
+    public async Task<V1TokenBalance[]> AggregateBalancesAsync(byte[] nexusId, IEnumerable<V1TokenInfoDTO> tokens)
+    {
+        var balances = await Service.AggregateBalancesQueryAsync(nexusId, tokens.Select(x => new V1TokenInfo()
+        {
+            TokenType = (byte)x.TokenType,
+            TokenIdentifier = x.TokenIdentifier,
+        }).ToList());
+
+        return tokens
+            .Select((x, i) => new V1TokenBalance(x, balances[i]))
+            .ToArray();
     }
 }

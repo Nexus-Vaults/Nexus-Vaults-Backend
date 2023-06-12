@@ -1,12 +1,5 @@
 ﻿using Common.Services;
-using Microsoft.Extensions.DependencyInjection;
-using Nexus.Application.Services;
 using Nexus.Application.Services.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Nexus.Infrastructure.Services.Contracts.Nexus;
 public class NexusProvider : Singleton, INexusProvider
