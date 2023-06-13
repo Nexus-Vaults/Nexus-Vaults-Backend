@@ -3,6 +3,7 @@ using Common.Services;
 using MediatR;
 using Nexus.Application.Common.MediatR;
 using Nexus.Contracts;
+using Nexus.WebAPI.Common.Attributes;
 using Nexus.WebAPI.Common.Exceptions;
 
 namespace Nexus.WebAPI.Common;
@@ -35,21 +36,40 @@ public abstract class HttpEndpoint<TContract, TRequest, TResult, TResponse> : Si
 
     public IEndpointConventionBuilder RegisterRoute(IEndpointRouteBuilder routes)
     {
-        var routeAttributes = GetType().GetCustomAttributes(typeof(RouteAttribute), false).Select(x => x as RouteAttribute);
+        var routeAttributes = GetType()
+            .GetCustomAttributes(typeof(RouteAttribute), false)
+            .Select(x => (RouteAttribute) x)
+            .ToArray();
+        var cacheAttributes = GetType()
+            .GetCustomAttributes(typeof(CACHEAttribute), false)
+            .Select(x => (CACHEAttribute) x)
+            .ToArray();
 
-        if (!routeAttributes.Any())
+        if (routeAttributes.Length == 0)
         {
             throw new MissingRouteAttributeException(GetType());
         }
-        if (routeAttributes.Count() > 1)
+        if (routeAttributes.Length > 1)
         {
             throw new DuplicateRouteAttributeException(GetType());
+        }
+        if (cacheAttributes.Length > 1)
+        {
+            throw new DuplicateCacheAttributeException(GetType());
         }
 
         var routeAttribute = routeAttributes.Single()!;
 
-        return routeAttribute.Register(routes, async ([AsParameters] TContract request, IMediator mediator, CancellationToken cancellationToken)
+        var convention = routeAttribute.Register(routes, async ([AsParameters] TContract request, IMediator mediator, CancellationToken cancellationToken)
             => await (this as IHttpEndpoint<TContract>).HandleAsync(request, mediator, cancellationToken));
+
+        if (cacheAttributes.Length == 1)
+        {
+            var cacheExpiration = cacheAttributes[0].Expiration;
+            convention = convention.CacheOutput(policy => policy.Cache().Expire(cacheExpiration));
+        }
+
+        return convention;
     }
 
     async Task<IResult> IHttpEndpoint<TContract>.HandleAsync(TContract requestContract, IMediator mediator, CancellationToken cancellationToken)

@@ -2,6 +2,7 @@
 using Nexus.Application.Handlers.Queries.Deployments.List;
 using Nexus.Contracts;
 using Nexus.WebAPI.Common;
+using Nexus.WebAPI.Common.Attributes;
 
 namespace Nexus.WebAPI.Endpoints.Deployments;
 
@@ -12,6 +13,7 @@ public record ListDeploymentsResponseContract(
 ) : IResponseContract;
 
 [GET("Api/Deployments")]
+[CACHE(300)]
 public class ListEndpoint : HttpEndpoint<
     ListDeploymentsRequestContract,
     ListDeploymentsQuery.Request, ListDeploymentsQuery.Result,

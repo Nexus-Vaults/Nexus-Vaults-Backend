@@ -1,4 +1,5 @@
-﻿using Nexus.Application.Handlers.Queries;
+﻿using AutoMapper;
+using Nexus.Application.Handlers.Queries;
 using Nexus.Contracts;
 using Nexus.WebAPI.Common;
 
@@ -19,6 +20,11 @@ public class ExistsEndpoint : HttpEndpoint<
     GetNexusExistenceQuery.Request, GetNexusExistenceQuery.Result,
     GetNexusExistenceResponseContract>
 {
+    public override void ConfigureResultToResponseMapping(Profile profile)
+    {
+        //Not needed, manually mapped
+    }
+
     public override IResult MapToResponse(GetNexusExistenceQuery.Result result)
     {
         return result.Status switch

@@ -41,6 +41,8 @@ public class Startup
 
         services.AddHttpContextAccessor();
 
+        services.AddOutputCache();
+
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen(swaggerOptions =>
         {
@@ -64,6 +66,8 @@ public class Startup
         {
             app.UseDeveloperExceptionPage();
         }
+
+        app.UseOutputCache();
 
         app.UseSwagger();
         app.UseSwaggerUI();
