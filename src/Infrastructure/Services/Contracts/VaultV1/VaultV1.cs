@@ -24,4 +24,9 @@ public class VaultV1 : IVaultV1
     {
         return Service.GetBalanceQueryAsync((byte)V1TokenTypes.Native, "");
     }
+
+    public Task<BigInteger> GetBalanceAsync(V1TokenTypes tokenType, string tokenIdentifier)
+    {
+        return Service.GetBalanceQueryAsync(((byte)tokenType), tokenIdentifier);
+    }
 }

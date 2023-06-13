@@ -6,7 +6,7 @@ using Nexus.Application.Services;
 using Nexus.Application.Services.Contracts;
 using System.Text.Json;
 
-namespace Nexus.Application.Handlers.Queries.Nexus.Overview;
+namespace Nexus.Application.Handlers.Queries;
 public class GetNexusOverviewQuery
 {
     public class Request : Query<Result>

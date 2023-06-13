@@ -1,5 +1,4 @@
 ﻿using Nexus.Application.Handlers.Queries;
-using Nexus.Application.Handlers.Queries.Nexus.Overview;
 using Nexus.Contracts;
 using Nexus.WebAPI.Common;
 
