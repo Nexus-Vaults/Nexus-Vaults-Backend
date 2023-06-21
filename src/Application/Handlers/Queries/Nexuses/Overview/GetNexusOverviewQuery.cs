@@ -4,7 +4,6 @@ using Nexus.Application.Common;
 using Nexus.Application.DTOs;
 using Nexus.Application.Services;
 using Nexus.Application.Services.Contracts;
-using System.Text.Json;
 
 namespace Nexus.Application.Handlers.Queries;
 public class GetNexusOverviewQuery
@@ -31,7 +30,7 @@ public class GetNexusOverviewQuery
     }
 
     public record Result(Status Status, string? NexusId = null,
-        string? Name = null, string? Owner = null, NexusSubchainDTO[]? Subchains = null);
+        string Name = null, string Owner = null, NexusSubchainDTO[] Subchains = null!, bool HasLoupeFacet = false, string[] FacetAddresses = null!);
 
     public class Handler : QueryHandler<Request, Result>
     {
@@ -88,7 +87,15 @@ public class GetNexusOverviewQuery
                 return new NexusSubchainDTO(controller.GetContractChainId(), vaults, balances, acceptedGatewayIds);
             }));
 
-            return new Result(Status.Success, Convert.ToHexString(nexusId), nexusName, nexusOwner, subChains);
+            try
+            {
+                var facets = await nexus.GetInstalledFacetAddressesAsync();
+                return new Result(Status.Success, Convert.ToHexString(nexusId), nexusName, nexusOwner, subChains, true, facets.ToArray());
+            }
+            catch
+            {
+                return new Result(Status.Success, Convert.ToHexString(nexusId), nexusName, nexusOwner, subChains, false, Array.Empty<string>());
+            }
         }
     }
 }

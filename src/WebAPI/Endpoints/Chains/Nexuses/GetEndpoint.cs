@@ -1,4 +1,5 @@
-﻿using Nexus.Application.Handlers.Queries;
+﻿using AutoMapper;
+using Nexus.Application.Handlers.Queries;
 using Nexus.Contracts;
 using Nexus.WebAPI.Common;
 
@@ -13,7 +14,9 @@ public record GetNexusResponseContract(
     string NexusId,
     string Name,
     string Owner,
-    NexusSubchainDTO[] Subchains
+    NexusSubchainDTO[] Subchains,
+    bool HasLoupeFacet,
+    string[] FacetAddresses
 ) : IResponseContract;
 
 [GET("Api/Chains/{contractChainId}/Nexuses/{nexusAddress}")]

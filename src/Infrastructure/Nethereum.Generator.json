@@ -19,6 +19,11 @@
       "ContractName": "VaultV1",
       "ABIFile": "../../artifacts/VaultV1.abi",
       "BaseOutputPath": "ContractDefinitions"
+    },
+    {
+      "ContractName": "DiamondLoupeFacet",
+      "ABIFile": "../../artifacts/DiamondLoupeFacet.abi",
+      "BaseOutputPath": "ContractDefinitions"
     }
   ]
 }

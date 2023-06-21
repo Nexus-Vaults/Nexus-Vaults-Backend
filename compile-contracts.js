@@ -6,7 +6,8 @@ const contract_names = [
   "NexusFactory",
   "VaultV1Controller",
   "Nexus",
-  "VaultV1"
+  "VaultV1",
+  "DiamondLoupeFacet"
 ];
 const contracts_root = "contracts";
 

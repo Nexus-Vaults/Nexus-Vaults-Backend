@@ -2,5 +2,6 @@
 public interface INexus : IContract
 {
     public Task<string> GetNameAsync();
-    public Task<string> GetOwnerAsync();
+    public Task<string> GetOwnerAsync(); 
+    public Task<IReadOnlyList<string>> GetInstalledFacetAddressesAsync();
 }
